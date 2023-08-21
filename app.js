@@ -3,22 +3,16 @@ const bodyparser = require('body-parser');
 
 const app = express();
 
+const adminRoutes = require('./routes/admin')
+const shopRoutes = require('./routes/shop')
+
 app.use(bodyparser.urlencoded({extended:false}))
 
-app.use('/add-product',(req,res,next)=>{
-    //console.log('in the add product page');
-    res.send('<form action="/product" method="POST"><input type="text" name="title"><button type="submit">Add product</button><input type="text" name="size"><button type="submit">Add size</button></form>')
-});
+app.use('/admin',adminRoutes);
+app.use(shopRoutes);
 
-app.post('/product',(req,res,next)=>{
-    console.log(req.body);
-    res.redirect('/');
-});
-
-app.use('/',(req,res,next)=>{
-    // console.log('in the middlewaresss');
-    res.send('<h1> hello to node js </h1>')
-});
-//const routes = require('./routes');
+app.use((req,res,next)=>{
+    res.status(404).send('<h1>Page not found</h1>')
+})
 
 app.listen(3000);
